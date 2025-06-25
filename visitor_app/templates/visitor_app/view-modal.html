@@ -1,0 +1,149 @@
+<table id="datatables" class="table table-bordered table-hover table-lg">
+  <h3 class="text-center">Visitors List</h3>
+  <thead class="table-light">
+    <tr>
+      <th scope="col" class="border-end">ID</th>
+      <th scope="col" class="border-end">Full Name</th>
+      <th scope="col" class="border-end">Phone Number</th>
+      <th scope="col" class="border-end">Person to Visit</th>
+      <th scope="col" class="border-end">Reason of Visit</th>
+      <th scope="col" class="border-end">Hours to Stay</th>
+      <th scope="col" class="border-end">Date of Entrance</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if records %}
+      {% for record in records %}
+      <tr>
+        <td class="border-end">{{ record.id }}</td>
+        <td class="border-end">{{ record.full_name }}</td>
+        <td class="border-end">{{ record.phone_number }}</td>
+        <td class="border-end">{{ record.person_to_visit }}</td>
+        <td class="border-end">{{ record.visit_reason }}</td>
+        <td class="border-end">{{ record.hours_to_stay }}</td>
+        <td class="border-end">{{ record.visit_time }}</td>
+
+        <!-- Button to trigger unique modal -->
+        <td>
+          <button
+            type="button"
+            class="btn btn-info"
+            data-bs-toggle="modal"
+            data-bs-target="#viewModal{{ record.id }}"
+          >
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </button>
+        </td>
+      </tr>
+
+      <!-- View Modal per record -->
+      <div
+        class="modal fade"
+        id="viewModal{{ record.id }}"
+        tabindex="-1"
+        aria-labelledby="viewModalLabel{{ record.id }}"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="viewModalLabel{{ record.id }}">
+               {{ record.full_name }}
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div class="modal-body">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <p><strong>Full Name:</strong> {{ record.full_name }}</p>
+                  <p><strong>Phone Number:</strong> {{ record.phone_number }}</p>
+                </div>
+                <div class="col-md-6">
+                  <p><strong>Person to Visit:</strong> {{ record.person_to_visit }}</p>
+                  <p><strong>Reason for Visit:</strong> {{ record.visit_reason }}</p>
+                  <p><strong>Visit Duration:</strong> {{ record.hours_to_stay }} hours</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <p><strong>Date of Entrance:</strong> {{ record.visit_time }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <a href="/update/{{ record.id }}" class="btn btn-info">Update</a>
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal{{ record.id }}"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delete Modal per record -->
+      <div
+        class="modal fade"
+        id="deleteModal{{ record.id }}"
+        tabindex="-1"
+        aria-labelledby="deleteModalLabel{{ record.id }}"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel{{ record.id }}">
+                Confirm Deletion: {{ record.full_name }}
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div class="modal-body">
+              <p><strong>Are you sure you want to delete this visitor record?</strong></p>
+              <p>This action cannot be undone.</p>
+              <div class="alert alert-warning">
+                <strong>Warning:</strong> Deleting this record will permanently remove all information about this visitor.
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <a href="/delete/{{ record.id }}" class="btn btn-danger">Confirm Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
+  </tbody>
+</table>
